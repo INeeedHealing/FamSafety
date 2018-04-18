@@ -14,12 +14,12 @@ public class Alarm {
     public static LinkedList<String> resP = new LinkedList<>(); //Speichert Programmnamen
     public static boolean killPs = false;   //Ob Ps geschlossen werden sollen
     public static int avlTime = 190;        //Wie viel Zeit mit Ps
-    public static boolean remPs = false;    //Ob Nach Zeit in Ps erinnert werden soll
-    public static int freqPs = 14;          //wie oft in min
-    public static boolean rem = false;      //ob nach Zeit am Pc erinnert werden soll
+    public static boolean remPs = true;    //Ob Nach Zeit in Ps erinnert werden soll
+    public static int freqPs = 30;          //wie oft in min
+    public static boolean rem = true;      //ob nach Zeit am Pc erinnert werden soll
     public static int freq = 30;            //wie oft in min
-    public static boolean needPass = true; //ob Passwort benötigt wird
-    public static String password = "Boi";
+    public static boolean needPass = false; //ob Passwort benötigt wird
+    public static String password;          //Passwort VERSCHLÜSSEL MAL!!
     public static boolean passWisRight = false;
 
     //static final String[] OPTIONNAMES = {"killPs", "avlTime", "remPs", "freqPs", "rem", "freq", "rem15", "needPass"};
@@ -56,20 +56,23 @@ public class Alarm {
         boolean rem2Once = true;
 
         Alarm al = new Alarm();
+        
+        options op = new options();
+        //Wenn Passwort verlangt wird
         if (needPass && password != null) {
             EnterPassword eP = new EnterPassword();
             eP.setVisible(true);
             eP.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            while (!passWisRight) {
-                TimeUnit.SECONDS.sleep(1);
-            }
-            passWisRight = false;
+        } else {
+            op.setVisible(true);
+            op.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         }
-        options op = new options();
-        op.setVisible(true);
-        op.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         while (true) {
+            if (!op.isVisible() && passWisRight) {
+                op.setVisible(true);
+                passWisRight = false;
+            }
             if (rem) {
                 if (remSwOnce) {
                     remSwOnce = false;
